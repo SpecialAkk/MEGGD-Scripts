@@ -5,20 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MEGGD Scripts</title>
     <link rel="icon" href="https://scriptblox.com/images/photo/678da39911443eaf1930cfb3-1754243330765.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #0d1a2e;
-            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
             margin: 0;
             padding: 0;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         header {
-            background-color: #0a1420;
-            padding: 20px;
+            background-color: #252526;
+            padding: 15px 20px;
             text-align: center;
-            border-bottom: 2px solid #1a3a5a;
+            border-bottom: 1px solid #3e3e42;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -28,72 +35,136 @@
         h1 {
             color: #ffffff;
             margin: 0;
+            font-size: 1.5em;
+            font-weight: 600;
         }
 
         .header-profile-pic {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            margin-left: 15px;
+            margin-left: 12px;
             vertical-align: middle;
-            border: 2px solid #007bff;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+            border: 1px solid #007acc;
+            box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
             transition: transform 0.2s ease;
             cursor: pointer;
         }
 
         .header-profile-pic:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         main {
-            padding: 20px;
+            padding: 15px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .script-image-container {
+                height: 160px;
+            }
+
+            .script-title-container {
+                padding: 10px;
+            }
+
+            .script-card h2 {
+                font-size: 1.1em;
+                padding-right: 35px;
+            }
+
+            .code-container {
+                padding: 10px;
+                margin-top: -10px;
+            }
+
+            .code-block {
+                font-size: 12px;
+                padding: 40px 10px 10px 10px; 
+            }
+
+            .options-button {
+                width: 30px;
+                height: 30px;
+                top: 177px; 
+                right: 8px; 
+            }
+
+            .options-button svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .copy-button {
+                width: 28px;
+                height: 28px;
+                top: 20px; 
+                right: 10px; 
+            }
+
+            .copy-button svg {
+                width: 16px;
+                height: 16px;
+            }
         }
 
         .script-card {
-            background-color: #1a2b40;
-            border-radius: 8px;
+            background-color: #252526;
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
         }
         
-        /* Order the cards dynamically based on 'new script' status */
         .script-card[data-new-script="true"] {
-            order: -1;
+            order: -1; 
         }
 
         .script-image-container {
             width: 100%;
-            height: 200px;
+            height: 180px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #0a1420;
+            background-color: #1e1e1e;
+            position: relative;
         }
 
         .script-image-container img {
             width: 100%;
             height: 100%;
-            object-fit: fill;
-            filter: brightness(1.2);
+            object-fit: cover;
             display: block;
+            transition: filter 0.2s ease;
+        }
+
+        .script-image-container:hover img {
+            filter: brightness(1.1);
         }
 
         .script-title-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px;
+            padding: 12px;
             position: relative;
-            background-color: #1a2b40;
-            margin-bottom: -15px;
+            background-color: #252526;
+            margin-bottom: 0; 
+            z-index: 2;
         }
 
         .script-card h2 {
@@ -101,30 +172,35 @@
             margin: 0;
             text-align: center;
             flex-grow: 1;
-            padding-right: 40px;
+            font-size: 1.2em;
+            font-weight: 500;
         }
 
         .code-container {
             position: relative;
-            background-color: #0a1420;
-            border-radius: 5px;
-            margin: 0 15px 15px;
-            padding: 15px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-            border: 1px solid #1f3f5a;
-            overflow: visible;
+            background-color: #252526;
+            margin-top: -16px; 
+            z-index: 3;
+            border-top: 1px solid #3e3e42;
+            padding: 12px;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            height: auto; 
         }
 
         .copy-button {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #007bff;
+            top: 24px;
+            right: 20px;
+            background-color: #0e639c;
             color: white;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border: none;
-            border-radius: 50%;
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -133,46 +209,73 @@
             z-index: 10;
             padding: 0;
         }
+        
+        .code-block {
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            white-space: pre;
+            margin: 0;
+            padding: 52px 12px 12px 12px; 
+            flex-grow: 1; 
+            height: auto; 
+            line-height: 1.4;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #1e1e1e;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .code-container .copy-button {
+            top: 20px; 
+            right: 20px;
+        }
 
         .copy-button:hover {
-            background-color: #0056b3;
+            background-color: #1177bb;
             transform: scale(1.05);
         }
 
         .copy-button svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: currentColor;
         }
 
         .options-button {
-            /* Adjusted position to move away from image/code */
             position: absolute;
-            top: 15px; /* Pushed down from top */
-            right: 15px;
-            background-color: transparent;
-            color: #007bff;
-            width: 34px; /* Increased size slightly for better click area */
-            height: 34px; /* Increased size slightly for better click area */
+            top: 182px;
+            right: 8px; 
+            background-color: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(2px);
+            color: #ffffff;
+            width: 30px;
+            height: 30px;
             border: none;
-            border-radius: 50%;
+            border-radius: 4px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
-            z-index: 15; /* Ensure it's above other elements if needed */
+            z-index: 15;
             padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .options-button:hover {
-            background-color: rgba(0, 123, 255, 0.1);
-            transform: scale(1.1);
+        
+        @media (min-width: 769px) {
+            .options-button {
+                top: 182px;
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+            }
         }
 
         .options-button svg {
-            width: 24px;
-            height: 24px;
+            width: 16px;
+            height: 16px;
             fill: currentColor;
             transition: transform 0.3s ease;
         }
@@ -186,250 +289,197 @@
             opacity: 0.6;
         }
 
-        .code-block {
-            color: #4a90e2;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 14px;
-            white-space: pre-wrap;
-            padding-right: 40px;
-            margin: 0;
+        .code-block code {
+            display: block;
+            width: 100%;
         }
 
         .info-panel {
-            background-color: #1f3f5a;
-            border-radius: 5px;
-            margin-top: 15px;
-            padding: 0 15px;
+            background-color: #2d2d30;
+            border-radius: 4px;
+            margin-top: 12px;
+            padding: 0;
             overflow: hidden;
-            max-height: 0; /* Hidden by default */
+            max-height: 0;
             overflow-y: auto;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out; /* Smooth transition */
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            border: 1px solid #3e3e42;
         }
 
         .info-panel.expanded {
-            max-height: 500px; /* Adjust if content is very long */
-            padding: 15px;
+            max-height: 400px;
+            padding: 12px;
         }
 
         .info-panel h3 {
             color: #ffffff;
             margin-top: 0;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #2d4c6d;
-            padding-bottom: 5px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #3e3e42;
+            padding-bottom: 4px;
+            font-size: 0.95em;
+            font-weight: 600;
         }
 
         .info-panel p, .info-panel ul, .info-panel ul li {
             font-size: 0.9em;
-            line-height: 1.6;
-            color: #c0c0c0;
-            margin-bottom: 10px;
+            line-height: 1.5;
+            color: #cccccc;
+            margin-bottom: 8px;
         }
         .info-panel ul {
             list-style-type: disc;
-            margin-left: 20px;
+            margin-left: 16px;
             padding: 0;
         }
         .info-panel ul li {
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        /* New Script Badge Styling */
-        .new-script-badge {
+        .badge {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #007bff; /* Blue color */
+            top: 8px;
             color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
             font-weight: bold;
             z-index: 5;
             text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0.5s ease-out;
-        }
-        .script-card[data-new-script="true"] .new-script-badge {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
+            transform: translateY(-8px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s ease-out;
         }
 
-        /* New Update Badge Styling */
-        .new-update-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #007bff; /* Blue color */
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            font-weight: bold;
-            z-index: 5;
-            text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            opacity: 0; /* Hidden by default */
-            visibility: hidden; /* Hidden by default */
-            transform: translateY(-10px); /* Start slightly above */
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0.5s ease-out; /* Smooth transition */
-        }
-        /* New position for new update when a new script is also present */
-        .script-card[data-new-script="true"][data-new-update="true"] .new-update-badge {
-            left: 115px; /* Adjusted to be next to 'New Script!' with spacing */
-        }
-        
-        .script-card[data-new-update="true"] .new-update-badge {
-            opacity: 1; /* Fade in */
-            visibility: visible; /* Make visible */
-            transform: translateY(0); /* Move to original position */
-        }
-
-        /* Fixed Badge Styling */
-        .fixed-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px; /* Default position */
-            background-color: #dc3545; /* Red color for "Fixed" */
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            font-weight: bold;
-            z-index: 5;
-            text-transform: uppercase;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0.5s ease-out;
-        }
-        /* Adjust position if both are active */
-        .script-card[data-new-update="true"][data-fixed="true"] .fixed-badge {
-            left: 120px; /* Adjusted position */
-        }
-        /* New position for fixed when a new script is also present */
-        .script-card[data-new-script="true"][data-fixed="true"] .fixed-badge {
-            left: 225px; /* Adjusted position for all three badges */
-        }
-        .script-card[data-new-script="true"][data-new-update="false"][data-fixed="true"] .fixed-badge {
-            left: 115px;
-        }
-        .script-card[data-new-update="true"][data-fixed="true"] .fixed-badge {
-            left: 115px;
-        }
-
+        .script-card[data-new-script="true"] .new-script-badge,
+        .script-card[data-new-update="true"] .new-update-badge,
         .script-card[data-fixed="true"] .fixed-badge {
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
         }
 
-        footer {
-            background-color: #0a1420;
-            color: #a0a0a0;
-            text-align: center;
-            padding: 15px;
-            margin-top: 30px;
-            border-top: 2px solid #1a3a5a;
+        .new-script-badge {
+            left: 8px;
+            background-color: #0e639c;
         }
 
-        /* Modal / Pop-up Styles */
+        .new-update-badge {
+            left: 8px;
+            background-color: #0e639c;
+        }
+        .script-card[data-new-script="true"] .new-update-badge {
+            left: 90px;
+        }
+        
+        .fixed-badge {
+            left: 8px;
+            background-color: #cd3131;
+        }
+        .script-card[data-new-script="true"][data-new-update="true"] .fixed-badge {
+            left: 180px;
+        }
+        .script-card[data-new-script="true"][data-new-update="false"] .fixed-badge {
+            left: 90px;
+        }
+        .script-card[data-new-update="true"][data-fixed="true"] .fixed-badge {
+            left: 90px;
+        }
+
+        footer {
+            background-color: #252526;
+            color: #858585;
+            text-align: center;
+            padding: 12px;
+            margin-top: 20px;
+            border-top: 1px solid #3e3e42;
+            font-size: 0.9em;
+        }
+
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
+            display: none;
+            position: fixed;
+            z-index: 1000;
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-            align-items: center; /* Center content vertically */
-            justify-content: center; /* Center content horizontally */
-            opacity: 0; /* Initial state for fade-in/out */
-            transition: opacity 0.3s ease-out; /* Smooth transition for opacity */
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
         }
 
         .modal.show {
-            display: flex; /* Show flex when active */
-            opacity: 1; /* Fade in */
-        }
-
-        .modal.hide {
-            opacity: 0; /* Fade out */
-        }
-
-        .modal-content {
-            background-color: #1a2b40;
-            margin: auto;
-            padding: 30px;
-            border: 1px solid #1f3f5a;
-            border-radius: 10px;
-            width: 80%; /* Could be more responsive */
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            transform: translateY(-20px); /* Initial state for slide-in/out */
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* Smooth transition for transform and opacity */
-        }
-
-        .modal.show .modal-content {
-            transform: translateY(0); /* Slide in */
+            display: flex;
             opacity: 1;
         }
 
-        .modal.hide .modal-content {
-            transform: translateY(-20px); /* Slide out */
+        .modal.hide {
             opacity: 0;
         }
 
-        .modal-content p {
-            font-size: 1.1em;
-            margin-bottom: 25px;
-            color: #e0e0e0;
+        .modal-content {
+            background-color: #252526;
+            margin: auto;
+            padding: 24px;
+            border: 1px solid #3e3e42;
+            border-radius: 6px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transform: translateY(-10px);
+            transition: transform 0.3s ease-out;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal.hide .modal-content {
+            transform: translateY(-10px);
         }
 
         .modal-buttons {
             display: flex;
             justify-content: space-around;
-            gap: 15px;
+            gap: 12px;
         }
 
         .modal-buttons button {
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 1em;
-            font-weight: bold;
+            font-size: 0.95em;
+            font-weight: 500;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            flex: 1; /* Make buttons take equal space */
+            flex: 1;
         }
 
-        .modal-buttons button:first-child { /* Go to button */
-            background-color: #007bff;
+        .modal-buttons button:first-child {
+            background-color: #0e639c;
             color: white;
         }
 
         .modal-buttons button:first-child:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
+            background-color: #1177bb;
+            transform: scale(1.02);
         }
 
-        .modal-buttons button:last-child { /* Cancel button */
-            background-color: #4a5a6a;
-            color: white;
+        .modal-buttons button:last-child {
+            background-color: #3e3e42;
+            color: #cccccc;
         }
 
         .modal-buttons button:last-child:hover {
-            background-color: #3a4a5a;
-            transform: scale(1.05);
+            background-color: #484850;
+            transform: scale(1.02);
         }
     </style>
 </head>
@@ -443,32 +493,31 @@
 
     <main>
         <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="new-script-badge">New Script!</div>
-            <div class="new-update-badge">New Update</div>
-            <div class="fixed-badge">Fixed</div>
+            <div class="badge new-script-badge">New Script!</div>
+            <div class="badge new-update-badge">New Update</div>
+            <div class="badge fixed-badge">Fixed</div>
             <div class="script-image-container">
                 <img src="https://ucarecdn.com/26ec8451-40f8-4fcb-b572-334726d27879/file_0000000097c061f896cca564c6d62549.png" alt="FPS BOOSTER V2 Script Image">
             </div>
             <div class="script-title-container">
                 <h2>FPS BOOSTER V2</h2>
-                <button class="options-button" title="Info & Updates">
-                    <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                        <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                    <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    </svg>
-                </button>
             </div>
+            <button class="options-button" title="Info & Updates">
+                <svg class="ellipsis-icon" viewBox="0 0 24 24">
+                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
             <div class="code-container">
-                <pre class="code-block">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/SpecialAkk/BEST-FPS-BOOSTER-V2/refs/heads/main/Files%20Best%20Fps%20Booster%20V2", true))()
-                </pre>
                 <button class="copy-button" title="Copy Code">
                     <svg viewBox="0 0 24 24">
                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
                 </button>
+                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SpecialAkk/BEST-FPS-BOOSTER-V2/refs/heads/main/Files%20Best%20Fps%20Booster%20V2", true))()</code></pre>
+
                 <div class="info-panel">
                     <h3>Information (FPS BOOSTER V2)</h3>
                     <p>This is the best FPS booster in V2 that minimized lag. It works better than the first version.</p>
@@ -477,26 +526,30 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/SpecialAkk/BEST-FPS-B
         </section>
 
         <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="new-script-badge">New Script!</div>
-            <div class="new-update-badge">New Update</div>
-            <div class="fixed-badge">Fixed</div>
+            <div class="badge new-script-badge">New Script!</div>
+            <div class="badge new-update-badge">New Update</div>
+            <div class="badge fixed-badge">Fixed</div>
             <div class="script-image-container">
                 <img src="https://ucarecdn.com/5f7c936a-1c5a-47ec-a59f-83b2dac56da8/file_0000000060dc624393523f6fc7f4e230.png" alt="HitBox Script Image">
             </div>
             <div class="script-title-container">
                 <h2>HitBox</h2>
-                <button class="options-button" title="Info & Updates">
-                    <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                        <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                    <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </div>
+            <button class="options-button" title="Info & Updates">
+                <svg class="ellipsis-icon" viewBox="0 0 24 24">
+                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+            <div class="code-container">
+                <button class="copy-button" title="Copy Code">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
                 </button>
-            </div>
-            <div class="code-container">
-                <pre class="code-block">
-_G.HeadSize = 35
+                <pre class="code-block"><code class="language-lua">_G.HeadSize = 35
 _G.Disabled = true
 
 game:GetService('RunService').RenderStepped:connect(function()
@@ -513,13 +566,7 @@ end)
 end
 end
 end
-end)
-                </pre>
-                <button class="copy-button" title="Copy Code">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
+end)</code></pre>
                 <div class="info-panel">
                     <h3>Information (HitBox)</h3>
                     <p>Just increases the player's HitBox, pretty simple script</p>
@@ -527,32 +574,30 @@ end)
             </div>
         </section>
 
-        <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="new-update-badge">New Update</div>
-            <div class="fixed-badge">Fixed</div>
+        <section class="script-card" data-new-script="false" data-new-update="true" data-fixed="false">
+            <div class="badge new-update-badge">New Update</div>
+            <div class="badge fixed-badge">Fixed</div>
             <div class="script-image-container">
                 <img src="https://ucarecdn.com/a240211e-de60-4078-8284-715663da996d/1_20250803182522.png" alt="FPS Booster Script Image">
             </div>
             <div class="script-title-container">
                 <h2>Fps Booster</h2>
-                <button class="options-button" title="Info & Updates">
-                    <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                        <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                    <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    </svg>
-                </button>
             </div>
+            <button class="options-button" title="Info & Updates">
+                <svg class="ellipsis-icon" viewBox="0 0 24 24">
+                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
             <div class="code-container">
-                <pre class="code-block">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/Best-Fps-Booster/refs/heads/main/Best%20Fps%20Booster", true))()
-                </pre>
                 <button class="copy-button" title="Copy Code">
                     <svg viewBox="0 0 24 24">
                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
                 </button>
+                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/Best-Fps-Booster/refs/heads/main/Best%20Fps%20Booster", true))()</code></pre>
 
                 <div class="info-panel">
                     <h3>Update Log (Fps Booster)</h3>
@@ -672,31 +717,30 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/Best-Fps
         </section>
 
         <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="new-update-badge">New Update</div>
-            <div class="fixed-badge">Fixed</div>
+            <div class="badge new-script-badge">New Script!</div>
+            <div class="badge new-update-badge">New Update</div>
+            <div class="badge fixed-badge">Fixed</div>
             <div class="script-image-container">
                 <img src="https://ucarecdn.com/e61973cb-200f-4166-a3ce-020aeef2607d/3_20250803195707.png" alt="Unknown Battle Simulator Script Image">
             </div>
             <div class="script-title-container">
                 <h2>Unknown Battle Simulator</h2>
-                <button class="options-button" title="Info & Updates">
-                    <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                        <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                    <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    </svg>
-                </button>
             </div>
+            <button class="options-button" title="Info & Updates">
+                <svg class="ellipsis-icon" viewBox="0 0 24 24">
+                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
             <div class="code-container">
-                <pre class="code-block">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/All-special-characters-unlocked/refs/heads/main/All%20special%20characters%20unlocked", true))()
-                </pre>
                 <button class="copy-button" title="Copy Code">
                     <svg viewBox="0 0 24 24">
                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
                 </button>
+                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/All-special-characters-unlocked/refs/heads/main/All%20special%20characters%20unlocked", true))()</code></pre>
 
                 <div class="info-panel">
                     <h3>Information (Unknown Battle Simulator)</h3>
@@ -705,36 +749,142 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/All-spec
             </div>
         </section>
 
-        <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="new-update-badge">New Update</div>
-            <div class="fixed-badge">Fixed</div>
+        <section class="script-card" data-new-script="true" data-new-update="false" data-fixed="false">
+            <div class="badge new-script-badge">New Script!</div>
+            <div class="badge new-update-badge">New Update</div>
+            <div class="badge fixed-badge">Fixed</div>
             <div class="script-image-container">
-                <img src="https://ucarecdn.com/19c82375-23e2-4e8a-ab63-b5dde0a02f5c/2_20250803194425.png" alt="Anti-Kick Script Image">
+                <img src="https://tr.rbxcdn.com/180DAY-6419b828af2a29959dffe1b2fb1b2e5c/480/270/Image/Png/noFilter" alt="Ability Wars Script Image">
             </div>
             <div class="script-title-container">
-                <h2>Anti-Kick</h2>
-                <button class="options-button" title="Info & Updates">
-                    <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                        <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                    </svg>
-                    <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    </svg>
-                </button>
+                <h2>Ability Wars</h2>
             </div>
+            <button class="options-button" title="Info & Updates">
+                <svg class="ellipsis-icon" viewBox="0 0 24 24">
+                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
             <div class="code-container">
-                <pre class="code-block">
-loadstring(game:HttpGet('https://raw.githubusercontent.com/SUUUUUS00000/BEST-ANTI-KICK/refs/heads/main/BEST%20ANTI-KICK'))()
-                </pre>
                 <button class="copy-button" title="Copy Code">
                     <svg viewBox="0 0 24 24">
                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
                 </button>
+                <pre class="code-block"><code class="language-lua">local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local teleportDelay = 0.1
+
+local candyObjects = {}
+local lastScanTime = 0
+
+local function isCandyObject(object)
+    return object.Name == "Candy Corn" or object.Name == "Candy Bowl"
+end
+
+local function scanWorkspace()
+    candyObjects = {}
+    
+    local children = workspace:GetChildren()
+    
+    for i = 1, #children do
+        local object = children[i]
+        
+        if object:IsA("Model") and isCandyObject(object) then
+            local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
+            if primaryPart then
+                table.insert(candyObjects, primaryPart)
+            end
+        end
+    end
+}
+
+scanWorkspace()
+
+workspace.ChildAdded:Connect(function(object)
+    if object:IsA("Model") and isCandyObject(object) then
+        task.wait(0.05)
+        local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
+        if primaryPart then
+            table.insert(candyObjects, primaryPart)
+        end
+    end
+end)
+
+local function teleportAllCandyObjects()
+    local character = player.Character
+    if not character then
+        return
+    end
+    
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then
+        return
+    end
+    
+    local targetPosition = humanoidRootPart.Position
+    local currentTime = tick()
+    
+    if currentTime - lastScanTime >= 0.3 then
+        lastScanTime = currentTime
+        scanWorkspace()
+    end
+    
+    for i = 1, #candyObjects; 1 do
+        local object = candyObjects[i]
+        if object and object.Parent then
+            object.Position = targetPosition
+        end
+    end
+end
+
+while true do
+    teleportAllCandyObjects()
+    task.wait(teleportDelay)
+end</code></pre>
+                <div class="info-panel">
+                    <h3>Information (Ability Wars)</h3>
+                    <p>Collects all the candies on the map(wait until the candies appear).</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="script-card" data-new-script="false" data-new-update="true" data-fixed="false">
+            <div class="badge new-update-badge">New Update</div>
+            <div class="badge fixed-badge">Fixed</div>
+            <div class="script-image-container">
+                <img src="https://ucarecdn.com/19c82375-23e2-4e8a-ab63-b5dde0a02f5c/2_20250803194425.png" alt="Anti-Kick Script Image">
+            </div>
+            <div class="script-title-container">
+                <h2>Anti-Kick</h2>
+            </div>
+            <button class="options-button" title="Info & Updates">
+                <svg class="ellipsis-icon" viewBox="0 0 24 24">
+                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+            </button>
+            <div class="code-container">
+                <button class="copy-button" title="Copy Code">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                </button>
+                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet('https://raw.githubusercontent.com/SUUUUUS00000/BEST-ANTI-KICK/refs/heads/main/BEST%20ANTI-KICK'))()</code></pre>
 
                 <div class="info-panel">
                     <h3>Information (Anti-Kick)</h3>
                     <p>This script blocks all types of kicks and bypasses Adonis Kick.</p>
+                    <h3>Update Log (Anti-Kick)</h3>
+                    <ul>
+                        <li>Added: Kick Blocking RemoteEvent</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -754,31 +904,43 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/SUUUUUS00000/BEST-ANT
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const copyButtons = document.querySelectorAll('.copy-button');
+            hljs.highlightAll();
 
+            const copyButtons = document.querySelectorAll('.copy-button');
             copyButtons.forEach(button => {
                 const originalIconHTML = button.innerHTML;
 
                 button.addEventListener('click', (event) => {
-                    const codeBlock = event.target.closest('.code-container').querySelector('.code-block');
+                    const currentButton = event.currentTarget;
+                    const codeBlock = currentButton.closest('.code-container').querySelector('.code-block code');
                     const codeToCopy = codeBlock.textContent.trim();
 
-                    navigator.clipboard.writeText(codeToCopy)
-                        .then(() => {
-                            console.log('Code copied!');
-                            button.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>';
-                            button.style.backgroundColor = '#28a745';
+                    const tempTextArea = document.createElement('textarea');
+                    tempTextArea.value = codeToCopy;
+                    tempTextArea.style.position = 'absolute';
+                    tempTextArea.style.left = '-9999px';
+                    
+                    document.body.appendChild(tempTextArea);
+                    tempTextArea.select();
+                    tempTextArea.setSelectionRange(0, 99999); 
 
-                            setTimeout(() => {
-                                button.innerHTML = originalIconHTML;
-                                button.style.backgroundColor = '#007bff';
-                            }, 2000);
-                        })
-                        .catch(err => {
-                            console.error('Failed to copy code: ', err);
-                        });
+                    try {
+                        document.execCommand('copy'); 
+                        
+                        currentButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>';
+                        currentButton.style.backgroundColor = '#388a34';
+
+                        setTimeout(() => {
+                            currentButton.innerHTML = originalIconHTML;
+                            currentButton.style.backgroundColor = '#0e639c';
+                        }, 2000);
+                    } catch (err) {
+                    }
+
+                    document.body.removeChild(tempTextArea); 
                 });
             });
 
@@ -792,39 +954,24 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/SUUUUUS00000/BEST-ANT
                 let isAnimating = false;
 
                 button.addEventListener('click', () => {
-                    if (isAnimating) return; // Prevent clicks during animation
-
+                    if (isAnimating) return;
                     isAnimating = true;
-                    // Disable the button immediately
                     button.disabled = true;
 
-                    if (infoPanel.classList.contains('expanded')) {
-                        // Close the panel
-                        infoPanel.classList.remove('expanded');
-                        ellipsisIcon.style.display = 'block';
-                        closeIcon.style.display = 'none';
-                        // Listen for the end of the transition
-                        infoPanel.addEventListener('transitionend', function handler() {
-                            isAnimating = false;
-                            button.disabled = false; // Enable button after animation
-                            infoPanel.removeEventListener('transitionend', handler);
-                        });
-                    } else {
-                        // Open the panel
-                        infoPanel.classList.add('expanded');
-                        ellipsisIcon.style.display = 'none';
-                        closeIcon.style.display = 'block';
-                        // Listen for the end of the transition
-                        infoPanel.addEventListener('transitionend', function handler() {
-                            isAnimating = false;
-                            button.disabled = false; // Enable button after animation
-                            infoPanel.removeEventListener('transitionend', handler);
-                        });
-                    }
+                    const isExpanded = infoPanel.classList.toggle('expanded');
+                    
+                    ellipsisIcon.style.display = isExpanded ? 'none' : 'block';
+                    closeIcon.style.display = isExpanded ? 'block' : 'none';
+
+                    const handler = () => {
+                        isAnimating = false;
+                        button.disabled = false;
+                        infoPanel.removeEventListener('transitionend', handler);
+                    };
+                    infoPanel.addEventListener('transitionend', handler);
                 });
             });
 
-            // Modal functionality
             const profilePicContainer = document.getElementById('profilePicContainer');
             const profileModal = document.getElementById('profileModal');
             const goToProfileButton = document.getElementById('goToProfile');
@@ -832,39 +979,37 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/SUUUUUS00000/BEST-ANT
 
             function showModal() {
                 profileModal.style.display = 'flex';
-                // Trigger reflow to ensure transition plays
-                profileModal.offsetWidth;
-                profileModal.classList.add('show');
+                requestAnimationFrame(() => {
+                    profileModal.classList.add('show');
+                });
             }
 
             function hideModal() {
                 profileModal.classList.remove('show');
                 profileModal.classList.add('hide');
-                profileModal.addEventListener('transitionend', function handler() {
+                const handler = () => {
                     profileModal.style.display = 'none';
                     profileModal.classList.remove('hide');
                     profileModal.removeEventListener('transitionend', handler);
-                });
+                };
+                profileModal.addEventListener('transitionend', handler);
             }
 
             profilePicContainer.addEventListener('click', showModal);
 
             goToProfileButton.addEventListener('click', () => {
-                window.open('https://scriptblox.com/u/MEGGD', '_blank'); // Open the link
-                hideModal(); // Hide the modal with transition
+                window.open('https://scriptblox.com/u/MEGGD', '_blank');
+                hideModal();
             });
 
-            cancelProfileButton.addEventListener('click', () => {
-                hideModal(); // Hide the modal with transition
-            });
+            cancelProfileButton.addEventListener('click', hideModal);
 
-            // Close modal if clicked outside of content
             profileModal.addEventListener('click', (event) => {
                 if (event.target === profileModal) {
-                    hideModal(); // Hide the modal with transition
+                    hideModal();
                 }
             });
         });
     </script>
 </body>
-    </html>
+</html>
