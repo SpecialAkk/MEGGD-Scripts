@@ -773,7 +773,8 @@ end)</code></pre>
                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
                 </button>
-                <pre class="code-block"><code class="language-lua">local Players = game:GetService("Players")
+                <pre class="code-block"><code class="language-lua">
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
@@ -801,7 +802,7 @@ local function scanWorkspace()
             end
         end
     end
-}
+end
 
 scanWorkspace()
 
@@ -834,7 +835,7 @@ local function teleportAllCandyObjects()
         scanWorkspace()
     end
     
-    for i = 1, #candyObjects; 1 do
+    for i = 1, #candyObjects do
         local object = candyObjects[i]
         if object and object.Parent then
             object.Position = targetPosition
