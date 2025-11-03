@@ -1,789 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEGGD Scripts</title>
-    <link rel="icon" href="https://scriptblox.com/images/photo/678da39911443eaf1930cfb3-1754243330765.png" type="image/png">
-    
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="dns-prefetch" href="https://scriptblox.com">
-    <link rel="dns-prefetch" href="https://ucarecdn.com">
-    <link rel="dns-prefetch" href="https://tr.rbxcdn.com">
-
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"></noscript>
-    
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            margin: 0;
-            padding: 0;
-            line-height: 1.4;
-            box-sizing: border-box;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        header {
-            background-color: #252526;
-            padding: 15px 20px;
-            text-align: center;
-            border-bottom: 1px solid #3e3e42;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        h1 {
-            color: #ffffff;
-            margin: 0;
-            font-size: 1.5em;
-            font-weight: 600;
-        }
-
-        .header-profile-pic {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-left: 12px;
-            vertical-align: middle;
-            border: 1px solid #007acc;
-            box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
-            transition: transform 0.2s ease;
-            cursor: pointer;
-        }
-
-        .header-profile-pic:hover {
-            transform: scale(1.05);
-        }
-
-        main {
-            padding: 15px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 768px) {
-            main {
-                grid-template-columns: 1fr;
-                padding: 10px;
-                gap: 15px;
-            }
-
-            .script-image-container {
-                height: 160px;
-            }
-
-            .script-title-container {
-                padding: 10px;
-            }
-
-            .script-card h2 {
-                font-size: 1.1em;
-                padding-right: 35px;
-            }
-
-            .code-container {
-                padding: 10px;
-                margin-top: -10px;
-            }
-
-            .code-block {
-                font-size: 12px;
-                padding: 40px 10px 10px 10px; 
-            }
-
-            .options-button {
-                width: 30px;
-                height: 30px;
-                top: 177px; 
-                right: 8px; 
-            }
-
-            .options-button svg {
-                width: 16px;
-                height: 16px;
-            }
-
-            .copy-button {
-                width: 28px;
-                height: 28px;
-                top: 20px; 
-                right: 10px; 
-            }
-
-            .copy-button svg {
-                width: 16px;
-                height: 16px;
-            }
-        }
-
-        .script-card {
-            background-color: #252526;
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            display: flex; 
-            flex-direction: column; 
-            position: relative; 
-        }
-        
-        .script-card[data-new-script="true"] {
-            order: -1; 
-        }
-
-        .script-image-container {
-            width: 100%;
-            height: 180px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #1e1e1e;
-            position: relative;
-        }
-
-        .script-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: filter 0.2s ease;
-            background-color: #333;
-        }
-
-        .script-image-container:hover img {
-            filter: brightness(1.1);
-        }
-
-        .script-title-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            position: relative;
-            background-color: #252526;
-            margin-bottom: 0; 
-            z-index: 2;
-        }
-
-        .script-card h2 {
-            color: #ffffff;
-            margin: 0;
-            text-align: center;
-            flex-grow: 1;
-            font-size: 1.2em;
-            font-weight: 500;
-        }
-
-        .code-container {
-            position: relative;
-            background-color: #252526;
-            margin-top: -16px; 
-            z-index: 3;
-            border-top: 1px solid #3e3e42;
-            padding: 12px;
-            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            flex-grow: 1; 
-            display: flex;
-            flex-direction: column;
-            height: auto; 
-        }
-
-        .copy-button {
-            position: absolute;
-            top: 24px;
-            right: 20px;
-            background-color: #0e639c;
-            color: white;
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            z-index: 10;
-            padding: 0;
-        }
-        
-        .code-block {
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 13px;
-            white-space: pre;
-            margin: 0;
-            padding: 52px 12px 12px 12px; 
-            flex-grow: 1; 
-            height: auto; 
-            line-height: 1.4;
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #1e1e1e;
-            border-radius: 4px;
-            position: relative;
-            box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .code-container .copy-button {
-            top: 20px; 
-            right: 20px;
-        }
-
-        .copy-button:hover {
-            background-color: #1177bb;
-            transform: scale(1.05);
-        }
-
-        .copy-button svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
-        }
-
-        .options-button {
-            position: absolute;
-            top: 182px;
-            right: 8px; 
-            background-color: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(2px);
-            color: #ffffff;
-            width: 30px;
-            height: 30px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
-            z-index: 15;
-            padding: 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        @media (min-width: 769px) {
-            .options-button {
-                top: 182px;
-                background-color: rgba(0, 0, 0, 0.5);
-                border: none;
-            }
-        }
-
-        .options-button svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-            transition: transform 0.3s ease;
-        }
-
-        .options-button.active svg {
-            transform: rotate(90deg);
-        }
-
-        .options-button:disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .code-block code {
-            display: block;
-            width: 100%;
-        }
-
-        .info-panel {
-            background-color: #2d2d30;
-            border-radius: 4px;
-            margin-top: 12px;
-            padding: 0;
-            overflow: hidden;
-            max-height: 0;
-            overflow-y: auto;
-            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-            border: 1px solid #3e3e42;
-        }
-
-        .info-panel.expanded {
-            max-height: 400px;
-            padding: 12px;
-        }
-
-        .info-panel h3 {
-            color: #ffffff;
-            margin-top: 0;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #3e3e42;
-            padding-bottom: 4px;
-            font-size: 0.95em;
-            font-weight: 600;
-        }
-
-        .info-panel p, .info-panel ul, .info-panel ul li {
-            font-size: 0.9em;
-            line-height: 1.5;
-            color: #cccccc;
-            margin-bottom: 8px;
-        }
-        .info-panel ul {
-            list-style-type: disc;
-            margin-left: 16px;
-            padding: 0;
-        }
-        .info-panel ul li {
-            margin-bottom: 4px;
-        }
-
-        .badge {
-            position: absolute;
-            top: 8px;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            font-weight: bold;
-            z-index: 5;
-            text-transform: uppercase;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-8px);
-            transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s ease-out;
-        }
-
-        .script-card[data-new-script="true"] .new-script-badge,
-        .script-card[data-new-update="true"] .new-update-badge,
-        .script-card[data-fixed="true"] .fixed-badge {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .new-script-badge {
-            left: 8px;
-            background-color: #0e639c;
-        }
-
-        .new-update-badge {
-            left: 8px;
-            background-color: #0e639c;
-        }
-        .script-card[data-new-script="true"] .new-update-badge {
-            left: 90px;
-        }
-        
-        .fixed-badge {
-            left: 8px;
-            background-color: #cd3131;
-        }
-        .script-card[data-new-script="true"][data-new-update="true"] .fixed-badge {
-            left: 180px;
-        }
-        .script-card[data-new-script="true"][data-new-update="false"] .fixed-badge {
-            left: 90px;
-        }
-        .script-card[data-new-update="true"][data-fixed="true"] .fixed-badge {
-            left: 90px;
-        }
-
-        footer {
-            background-color: #252526;
-            color: #858585;
-            text-align: center;
-            padding: 12px;
-            margin-top: 20px;
-            border-top: 1px solid #3e3e42;
-            font-size: 0.9em;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.7);
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease-out;
-        }
-
-        .modal.show {
-            display: flex;
-            opacity: 1;
-        }
-
-        .modal.hide {
-            opacity: 0;
-        }
-
-        .modal-content {
-            background-color: #252526;
-            margin: auto;
-            padding: 24px;
-            border: 1px solid #3e3e42;
-            border-radius: 6px;
-            width: 90%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            transform: translateY(-10px);
-            transition: transform 0.3s ease-out;
-        }
-
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
-
-        .modal.hide .modal-content {
-            transform: translateY(-10px);
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: space-around;
-            gap: 12px;
-        }
-
-        .modal-buttons button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.95em;
-            font-weight: 500;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            flex: 1;
-        }
-
-        .modal-buttons button:first-child {
-            background-color: #0e639c;
-            color: white;
-        }
-
-        .modal-buttons button:first-child:hover {
-            background-color: #1177bb;
-            transform: scale(1.02);
-        }
-
-        .modal-buttons button:last-child {
-            background-color: #3e3e42;
-            color: #cccccc;
-        }
-
-        .modal-buttons button:last-child:hover {
-            background-color: #484850;
-            transform: scale(1.02);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MEGGD Scripts</title>
+<link rel="icon" href="https://scriptblox.com/images/photo/678da39911443eaf1930cfb3-1754243330765.png">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="dns-prefetch" href="https://scriptblox.com">
+<link rel="dns-prefetch" href="https://ucarecdn.com">
+<link rel="dns-prefetch" href="https://tr.rbxcdn.com">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css" as="style">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#1e1e1e;color:#d4d4d4;line-height:1.4}header{background:#252526;padding:15px 20px;text-align:center;border-bottom:1px solid #3e3e42;display:flex;align-items:center;justify-content:center}h1{color:#fff;font-size:1.5em;font-weight:600}@font-face{font-family:'Segoe UI';font-display:swap}.header-profile-pic{width:32px;height:32px;border-radius:50%;margin-left:12px;border:1px solid #007acc;box-shadow:0 0 4px rgba(0,122,204,.3);transition:transform .2s;cursor:pointer}.header-profile-pic:hover{transform:scale(1.05)}main{padding:15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1200px;margin:0 auto}@media(max-width:768px){main{grid-template-columns:1fr;padding:10px;gap:15px}.script-image-container{height:160px}.script-title-container{padding:10px}.script-card h2{font-size:1.1em;padding-right:35px}.code-container{padding:10px;margin-top:-10px}.code-block{font-size:12px;padding:40px 10px 10px}.options-button{width:30px;height:30px;top:177px;right:8px}.options-button svg{width:16px;height:16px}.copy-button{width:28px;height:28px;top:20px;right:10px}.copy-button svg{width:16px;height:16px}}.script-card{background:#252526;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.4);display:flex;flex-direction:column;position:relative}.script-card[data-new-script="true"]{order:-1}.script-image-container{width:100%;height:180px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#1e1e1e;position:relative}.script-image-container img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .2s;background:#333}.script-image-container:hover img{filter:brightness(1.1)}.script-title-container{display:flex;align-items:center;justify-content:center;padding:12px;position:relative;background:#252526;z-index:2}.script-card h2{color:#fff;text-align:center;flex-grow:1;font-size:1.2em;font-weight:500}.code-container{position:relative;background:#252526;margin-top:-16px;z-index:3;border-top:1px solid #3e3e42;padding:12px;box-shadow:inset 0 0 4px rgba(0,0,0,.3);overflow:hidden;flex-grow:1;display:flex;flex-direction:column}.copy-button{position:absolute;top:24px;right:20px;background:#0e639c;color:#fff;width:32px;height:32px;border:none;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,transform .2s;z-index:10;padding:0}.code-block{overflow-x:auto;font-family:Consolas,Monaco,monospace;font-size:13px;white-space:pre;margin:0;padding:52px 12px 12px;flex-grow:1;line-height:1.4;width:100%;background:#1e1e1e;border-radius:4px;position:relative;box-shadow:0 0 4px rgba(0,0,0,.3)}.code-container .copy-button{top:20px;right:20px}.copy-button:hover{background:#1177bb;transform:scale(1.05)}.copy-button svg{width:18px;height:18px;fill:currentColor}.options-button{position:absolute;top:182px;right:8px;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);color:#fff;width:30px;height:30px;border:none;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .3s,transform .2s,color .3s;z-index:15;padding:0;border:1px solid rgba(255,255,255,.1)}@media(min-width:769px){.options-button{top:182px;background:rgba(0,0,0,.5);border:none}}.options-button svg{width:16px;height:16px;fill:currentColor;transition:transform .3s}.options-button.active svg{transform:rotate(90deg)}.options-button:disabled{cursor:not-allowed;opacity:.6}.info-panel{background:#2d2d30;border-radius:4px;margin-top:12px;padding:0;overflow:hidden;max-height:0;overflow-y:auto;transition:max-height .3s ease-out,padding .3s ease-out;border:1px solid #3e3e42}.info-panel.expanded{max-height:400px;padding:12px}.info-panel h3{color:#fff;margin-top:0;margin-bottom:8px;border-bottom:1px solid #3e3e42;padding-bottom:4px;font-size:.95em;font-weight:600}.info-panel p,.info-panel ul,.info-panel ul li{font-size:.9em;line-height:1.5;color:#ccc;margin-bottom:8px}.info-panel ul{list-style-type:disc;margin-left:16px;padding:0}.info-panel ul li{margin-bottom:4px}.badge{position:absolute;top:8px;color:#fff;padding:4px 8px;border-radius:4px;font-size:.75em;font-weight:700;z-index:5;text-transform:uppercase;box-shadow:0 1px 3px rgba(0,0,0,.3);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .3s ease-out,transform .3s ease-out,visibility .3s ease-out}.script-card[data-new-script="true"] .new-script-badge,.script-card[data-new-update="true"] .new-update-badge,.script-card[data-fixed="true"] .fixed-badge{opacity:1;visibility:visible;transform:translateY(0)}.new-script-badge{left:8px;background:#0e639c}.new-update-badge{left:8px;background:#0e639c}.script-card[data-new-script="true"] .new-update-badge{left:90px}.fixed-badge{left:8px;background:#cd3131}.script-card[data-new-script="true"][data-new-update="true"] .fixed-badge{left:180px}.script-card[data-new-script="true"][data-new-update="false"] .fixed-badge{left:90px}.script-card[data-new-update="true"][data-fixed="true"] .fixed-badge{left:90px}footer{background:#252526;color:#858585;text-align:center;padding:12px;margin-top:20px;border-top:1px solid #3e3e42;font-size:.9em}.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,.7);align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease-out}.modal.show{display:flex;opacity:1}.modal.hide{opacity:0}.modal-content{background:#252526;margin:auto;padding:24px;border:1px solid #3e3e42;border-radius:6px;width:90%;max-width:350px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.5);transform:translateY(-10px);transition:transform .3s ease-out}.modal.show .modal-content{transform:translateY(0)}.modal.hide .modal-content{transform:translateY(-10px)}.modal-buttons{display:flex;justify-content:space-around;gap:12px}.modal-buttons button{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;font-size:.95em;font-weight:500;transition:background .3s,transform .2s;flex:1}.modal-buttons button:first-child{background:#0e639c;color:#fff}.modal-buttons button:first-child:hover{background:#1177bb;transform:scale(1.02)}.modal-buttons button:last-child{background:#3e3e42;color:#ccc}.modal-buttons button:last-child:hover{background:#484850;transform:scale(1.02)}
+</style>
 </head>
 <body>
-    <header>
-        <h1>MEGGD Scripts</h1>
-        <div id="profilePicContainer">
-            <img src="https://scriptblox.com/images/photo/678da39911443eaf1930cfb3-1754243330765.png" alt="MEGGD ScriptBlox Profile" class="header-profile-pic" width="32" height="32">
-        </div>
-    </header>
-
-    <main>
-        <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="badge new-script-badge">New Script!</div>
-            <div class="badge new-update-badge">New Update</div>
-            <div class="badge fixed-badge">Fixed</div>
-            <div class="script-image-container">
-                <img src="https://ucarecdn.com/26ec8451-40f8-4fcb-b572-334726d27879/file_0000000097c061f896cca564c6d62549.png" alt="FPS BOOSTER V2 Script Image" loading="lazy" width="480" height="270" onerror="this.style.display='none'">
-            </div>
-            <div class="script-title-container">
-                <h2>FPS BOOSTER V2</h2>
-            </div>
-            <button class="options-button" title="Info & Updates">
-                <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <div class="code-container">
-                <button class="copy-button" title="Copy Code">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
-                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SpecialAkk/BEST-FPS-BOOSTER-V2/refs/heads/main/Files%20Best%20Fps%20Booster%20V2", true))()</code></pre>
-
-                <div class="info-panel">
-                    <h3>Information (FPS BOOSTER V2)</h3>
-                    <p>This is the best FPS booster in V2 that minimized lag. It works better than the first version.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="badge new-script-badge">New Script!</div>
-            <div class="badge new-update-badge">New Update</div>
-            <div class="badge fixed-badge">Fixed</div>
-            <div class="script-image-container">
-                <img src="https://ucarecdn.com/5f7c936a-1c5a-47ec-a59f-83b2dac56da8/file_0000000060dc624393523f6fc7f4e230.png" alt="HitBox Script Image" loading="lazy" width="480" height="270" onerror="this.style.display='none'">
-            </div>
-            <div class="script-title-container">
-                <h2>HitBox</h2>
-            </div>
-            <button class="options-button" title="Info & Updates">
-                <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <div class="code-container">
-                <button class="copy-button" title="Copy Code">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
-                <pre class="code-block"><code class="language-lua">_G.HeadSize = 35
-_G.Disabled = true
-
-game:GetService('RunService').RenderStepped:connect(function()
-if _G.Disabled then
-for i,v in next, game:GetService('Players'):GetPlayers() do
-if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-pcall(function()
-v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-v.Character.HumanoidRootPart.Transparency = 1
-v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
-v.Character.HumanoidRootPart.Material = "Neon"
-v.Character.HumanoidRootPart.CanCollide = false
-end)
-end
-end
-end
-end)</code></pre>
-                <div class="info-panel">
-                    <h3>Information (HitBox)</h3>
-                    <p>Just increases the player's HitBox, pretty simple script</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="badge new-update-badge">New Update</div>
-            <div class="badge fixed-badge">Fixed</div>
-            <div class="script-image-container">
-                <img src="https://ucarecdn.com/a240211e-de60-4078-8284-715663da996d/1_20250803182522.png" alt="FPS Booster Script Image" loading="lazy" width="480" height="270" onerror="this.style.display='none'">
-            </div>
-            <div class="script-title-container">
-                <h2>Fps Booster</h2>
-            </div>
-            <button class="options-button" title="Info & Updates">
-                <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <div class="code-container">
-                <button class="copy-button" title="Copy Code">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
-                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/Best-Fps-Booster/refs/heads/main/Best%20Fps%20Booster", true))()</code></pre>
-
-                <div class="info-panel">
-                    <h3>Update Log (Fps Booster)</h3>
-                    <ul>
-                        <li>Update V1
-                            <ul>
-                                <li>Accelerated work script</li>
-                                <li>Code optimized</li>
-                                <li>Added new FPS boosting features</li>
-                            </ul>
-                        </li>
-                        <li>Update V2
-                            <ul>
-                                <li>Reduced checks so that the script itself does not produce logs</li>
-                                <li>Added game optimization features</li>
-                                <li>The script has been partially optimized</li>
-                                <li>Removed some functions that produce lags</li>
-                            </ul>
-                        </li>
-                        <li>Update V3
-                            <ul>
-                                <li>Added "RenderFidelity" function to optimize complex effects suchs as "Tessellation"</li>
-                                <li>Some functions have been fixed</li>
-                                <li>Added a new way to gradually optimize the game when there are lags</li>
-                            </ul>
-                        </li>
-                        <li>Update V4
-                            <ul>
-                                <li>Removed functions that could reduce FPS</li>
-                                <li>Some parts of the code have been fixed</li>
-                            </ul>
-                        </li>
-                        <li>Update V5
-                            <ul>
-                                <li>Added "Z._M14" function to clean garbage</li>
-                                <li>Improved game optimization</li>
-                            </ul>
-                        </li>
-                        <li>Update V6
-                            <ul>
-                                <li>Optimization</li>
-                            </ul>
-                        </li>
-                        <li>Update V7
-                            <ul>
-                                <li>Improved Z._M1 function</li>
-                                <li>Improved Z._M6 function</li>
-                                <li>Added _M10 function for smoothness</li>
-                                <li>Improved Z._M8 function to better support different effects</li>
-                            </ul>
-                        </li>
-                        <li>Update V8
-                            <ul>
-                                <li>Removed Z._scriptManager function</li>
-                                <li>Removed Z._M10 function</li>
-                                <li>Improved Z._clientInterpolator function</li>
-                                <li>Improved Z._M9 function</li>
-                                <li>Improved Z._M8 function</li>
-                                <li>Improved Z._M7 function</li>
-                                <li>Improved Z._M6 function</li>
-                                <li>Improved Z._M1 core function</li>
-                                <li>Improved Z._M14 function</li>
-                                <li>Improved Z._M13 function</li>
-                                <li>Improved Z._M2 function</li>
-                                <li>Improved Z._memoryManager function</li>
-                            </ul>
-                        </li>
-                        <li>Update V9
-                            <ul>
-                                <li>Improved functions</li>
-                                <li>Optimized Z._M5 function</li>
-                                <li>Improved Z._M2 function</li>
-                                <li>Improved Z._memoryManager function</li>
-                                <li>Improved Z._clientInterpolator function</li>
-                                <li>Improved Z._M4 function</li>
-                                <li>Improved Z._M1 core function</li>
-                                <li>Added Z._M11 function</li>
-                                <li>Improved Z._M6 function</li>
-                                <li>Improved Z._M8 function</li>
-                                <li>Improved Z._M7 function</li>
-                                <li>Improved Z._M9 function</li>
-                                <li>Added Z. _M12 function</li>
-                            </ul>
-                        </li>
-                        <li>Update V10
-                            <ul>
-                                <li>Improved Z._M9 function</li>
-                                <li>Improved Z._M5 function</li>
-                                <li>Improved Z._M12 function</li>
-                                <li>Improved Z._M13 function</li>
-                                <li>Changed Z._M12 function</li>
-                                <li>Added Z._M12:f3 function</li>
-                                <li>Added Z._M9:f2 function</li>
-                                <li>Added Z._M5:f2 function</li>
-                                <li>Added Z._M5:f1 function</li>
-                                <li>Added Z._M4 function</li>
-                                <li>Added Z._M6:f2 function</li>
-                                <li>Added Z._M7:f2 function</li>
-                                <li>Added Z._M9:f2 function</li>
-                                <li>Added Z._M9:f1 function</li>
-                                <li>Added Z._M4:f1 function</li>
-                                <li>Added _M15 function</li>
-                                <li>Added Z._M1:f1 function</li>
-                                <li>Added Z._M13:f2 function</li>
-                                <li>Improved Z._M13 function</li>
-                            </ul>
-                        </li>
-                        <li>Update V11
-                            <ul>
-                                <li>Improved stability</li>
-                                <li>The code has been slightly modified</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
-            <div class="badge new-script-badge">New Script!</div>
-            <div class="badge new-update-badge">New Update</div>
-            <div class="badge fixed-badge">Fixed</div>
-            <div class="script-image-container">
-                <img src="https://ucarecdn.com/e61973cb-200f-4166-a3ce-020aeef2607d/3_20250803195707.png" alt="Unknown Battle Simulator Script Image" loading="lazy" width="480" height="270" onerror="this.style.display='none'">
-            </div>
-            <div class="script-title-container">
-                <h2>Unknown Battle Simulator</h2>
-            </div>
-            <button class="options-button" title="Info & Updates">
-                <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <div class="code-container">
-                <button class="copy-button" title="Copy Code">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
-                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/All-special-characters-unlocked/refs/heads/main/All%20special%20characters%20unlocked", true))()</code></pre>
-
-                <div class="info-panel">
-                    <h3>Information (Unknown Battle Simulator)</h3>
-                    <p>Unlocked all characters even gamepasses in the game "Unknown Battle Simulator"</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="script-card" data-new-script="true" data-new-update="false" data-fixed="false">
-            <div class="badge new-script-badge">New Script!</div>
-            <div class="badge new-update-badge">New Update</div>
-            <div class="badge fixed-badge">Fixed</div>
-            <div class="script-image-container">
-                <img src="https://tr.rbxcdn.com/180DAY-6419b828af2a29959dffe1b2fb1b2e5c/480/270/Image/Png/noFilter" alt="Ability Wars Script Image" loading="lazy" width="480" height="270" onerror="this.style.display='none'">
-            </div>
-            <div class="script-title-container">
-                <h2>Ability Wars</h2>
-            </div>
-            <button class="options-button" title="Info & Updates">
-                <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <div class="code-container">
-                <button class="copy-button" title="Copy Code">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
-                <pre class="code-block"><code class="language-lua">
-local Players = game:GetService("Players")
+<header>
+<h1>MEGGD Scripts</h1>
+<div id="profilePicContainer">
+<img src="https://scriptblox.com/images/photo/678da39911443eaf1930cfb3-1754243330765.png" alt="MEGGD ScriptBlox Profile" class="header-profile-pic" width="32" height="32" decoding="async">
+</div>
+</header>
+<main>
+<section class="script-card" data-new-script="true" data-new-update="false" data-fixed="false">
+<div class="badge new-script-badge">New Script!</div>
+<div class="badge new-update-badge">New Update</div>
+<div class="badge fixed-badge">Fixed</div>
+<div class="script-image-container">
+<img src="https://tr.rbxcdn.com/180DAY-6419b828af2a29959dffe1b2fb1b2e5c/480/270/Image/Png/noFilter" alt="Ability Wars Script Image" fetchpriority="high" width="480" height="270">
+</div>
+<div class="script-title-container">
+<h2>Ability Wars</h2>
+</div>
+<button class="options-button" title="Info & Updates">
+<svg class="ellipsis-icon" viewBox="0 0 24 24">
+<path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+</svg>
+<svg class="close-icon" style="display:none" viewBox="0 0 24 24">
+<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+</svg>
+</button>
+<div class="code-container">
+<button class="copy-button" title="Copy Code">
+<svg viewBox="0 0 24 24">
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+</svg>
+</button>
+<pre class="code-block"><code class="language-lua">local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
@@ -856,179 +120,215 @@ while true do
     teleportAllCandyObjects()
     task.wait(teleportDelay)
 end</code></pre>
-                <div class="info-panel">
-                    <h3>Information (Ability Wars)</h3>
-                    <p>Collects all the candies on the map(wait until the candies appear).</p>
-                </div>
-            </div>
-        </section>
+<div class="info-panel">
+<h3>Information (Ability Wars)</h3>
+<p>Collects all the candies on the map(wait until the candies appear).</p>
+</div>
+</div>
+</section>
+<section class="script-card" data-new-script="false" data-new-update="true" data-fixed="false">
+<div class="badge new-update-badge">New Update</div>
+<div class="badge fixed-badge">Fixed</div>
+<div class="script-image-container">
+<img src="https://ucarecdn.com/19c82375-23e2-4e8a-ab63-b5dde0a02f5c/2_20250803194425.png" alt="Anti-Kick Script Image" loading="lazy" decoding="async" width="480" height="270">
+</div>
+<div class="script-title-container">
+<h2>Anti-Kick</h2>
+</div>
+<button class="options-button" title="Info & Updates">
+<svg class="ellipsis-icon" viewBox="0 0 24 24">
+<path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+</svg>
+<svg class="close-icon" style="display:none" viewBox="0 0 24 24">
+<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+</svg>
+</button>
+<div class="code-container">
+<button class="copy-button" title="Copy Code">
+<svg viewBox="0 0 24 24">
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+</svg>
+</button>
+<pre class="code-block"><code class="language-lua">loadstring(game:HttpGet('https://raw.githubusercontent.com/SUUUUUS00000/BEST-ANTI-KICK/refs/heads/main/BEST%20ANTI-KICK'))()</code></pre>
+<div class="info-panel">
+<h3>Information (Anti-Kick)</h3>
+<p>This script blocks all types of kicks and bypasses Adonis Kick.</p>
+<h3>Update Log (Anti-Kick)</h3>
+<ul>
+<li>Added: Blocking of RemoteEvent Kick</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
+<div class="badge new-script-badge">New Script!</div>
+<div class="badge new-update-badge">New Update</div>
+<div class="badge fixed-badge">Fixed</div>
+<div class="script-image-container">
+<img src="https://ucarecdn.com/26ec8451-40f8-4fcb-b572-334726d27879/file_0000000097c061f896cca564c6d62549.png" alt="FPS BOOSTER V2 Script Image" loading="lazy" decoding="async" width="480" height="270">
+</div>
+<div class="script-title-container">
+<h2>FPS BOOSTER V2</h2>
+</div>
+<button class="options-button" title="Info & Updates">
+<svg class="ellipsis-icon" viewBox="0 0 24 24">
+<path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+</svg>
+<svg class="close-icon" style="display:none" viewBox="0 0 24 24">
+<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+</svg>
+</button>
+<div class="code-container">
+<button class="copy-button" title="Copy Code">
+<svg viewBox="0 0 24 24">
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+</svg>
+</button>
+<pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SpecialAkk/BEST-FPS-BOOSTER-V2/refs/heads/main/Files%20Best%20Fps%20Booster%20V2", true))()</code></pre>
+<div class="info-panel">
+<h3>Information (FPS BOOSTER V2)</h3>
+<p>This is the best FPS booster in V2 that minimized lag. It works better than the first version.</p>
+</div>
+</div>
+</section>
+<section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
+<div class="badge new-script-badge">New Script!</div>
+<div class="badge new-update-badge">New Update</div>
+<div class="badge fixed-badge">Fixed</div>
+<div class="script-image-container">
+<img src="https://ucarecdn.com/5f7c936a-1c5a-47ec-a59f-83b2dac56da8/file_0000000060dc624393523f6fc7f4e230.png" alt="HitBox Script Image" loading="lazy" decoding="async" width="480" height="270">
+</div>
+<div class="script-title-container">
+<h2>HitBox</h2>
+</div>
+<button class="options-button" title="Info & Updates">
+<svg class="ellipsis-icon" viewBox="0 0 24 24">
+<path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+</svg>
+<svg class="close-icon" style="display:none" viewBox="0 0 24 24">
+<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+</svg>
+</button>
+<div class="code-container">
+<button class="copy-button" title="Copy Code">
+<svg viewBox="0 0 24 24">
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+</svg>
+</button>
+<pre class="code-block"><code class="language-lua">_G.HeadSize = 35
+_G.Disabled = true
 
-        <section class="script-card" data-new-script="false" data-new-update="true" data-fixed="false">
-            <div class="badge new-update-badge">New Update</div>
-            <div class="badge fixed-badge">Fixed</div>
-            <div class="script-image-container">
-                <img src="https://ucarecdn.com/19c82375-23e2-4e8a-ab63-b5dde0a02f5c/2_20250803194425.png" alt="Anti-Kick Script Image" loading="lazy" width="480" height="270" onerror="this.style.display='none'">
-            </div>
-            <div class="script-title-container">
-                <h2>Anti-Kick</h2>
-            </div>
-            <button class="options-button" title="Info & Updates">
-                <svg class="ellipsis-icon" viewBox="0 0 24 24">
-                    <path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-                </svg>
-                <svg class="close-icon" style="display:none;" viewBox="0 0 24 24">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <div class="code-container">
-                <button class="copy-button" title="Copy Code">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                    </svg>
-                </button>
-                <pre class="code-block"><code class="language-lua">loadstring(game:HttpGet('https://raw.githubusercontent.com/SUUUUUS00000/BEST-ANTI-KICK/refs/heads/main/BEST%20ANTI-KICK'))()</code></pre>
-
-                <div class="info-panel">
-                    <h3>Information (Anti-Kick)</h3>
-                    <p>This script blocks all types of kicks and bypasses Adonis Kick.</p>
-                    <h3>Update Log (Anti-Kick)</h3>
-                    <ul>
-                        <li>Added: Blocking of RemoteEvent Kick</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 MEGGD Scripts</p>
-    </footer>
-
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <p>Do you want to open my ScriptBlox profile?</p>
-            <div class="modal-buttons">
-                <button id="goToProfile">Go to</button>
-                <button id="cancelProfile">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            function initHighlighting() {
-                if (typeof hljs !== 'undefined') {
-                    hljs.highlightAll();
-                } else {
-                    setTimeout(initHighlighting, 100);
-                }
-            }
-            initHighlighting();
-
-
-            const copyButtons = document.querySelectorAll('.copy-button');
-            copyButtons.forEach(button => {
-                const originalIconHTML = button.innerHTML;
-
-                button.addEventListener('click', (event) => {
-                    const currentButton = event.currentTarget;
-                    const codeBlock = currentButton.closest('.code-container').querySelector('.code-block code');
-                    const codeToCopy = codeBlock.textContent.trim();
-
-                    const tempTextArea = document.createElement('textarea');
-                    tempTextArea.value = codeToCopy;
-                    tempTextArea.style.position = 'absolute';
-                    tempTextArea.style.left = '-9999px';
-                    
-                    document.body.appendChild(tempTextArea);
-                    tempTextArea.select();
-                    tempTextArea.setSelectionRange(0, 99999); 
-
-                    try {
-                        document.execCommand('copy'); 
-                        
-                        currentButton.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>';
-                        currentButton.style.backgroundColor = '#388a34';
-
-                        setTimeout(() => {
-                            currentButton.innerHTML = originalIconHTML;
-                            currentButton.style.backgroundColor = '#0e639c';
-                        }, 2000);
-                    } catch (err) {
-                    }
-
-                    document.body.removeChild(tempTextArea); 
-                });
-            });
-
-            const optionsButtons = document.querySelectorAll('.options-button');
-            optionsButtons.forEach(button => {
-                const scriptCard = button.closest('.script-card');
-                const infoPanel = scriptCard.querySelector('.info-panel');
-                const ellipsisIcon = button.querySelector('.ellipsis-icon');
-                const closeIcon = button.querySelector('.close-icon');
-
-                let isAnimating = false;
-
-                button.addEventListener('click', () => {
-                    if (isAnimating) return;
-                    isAnimating = true;
-                    button.disabled = true;
-
-                    const isExpanded = infoPanel.classList.toggle('expanded');
-                    
-                    ellipsisIcon.style.display = isExpanded ? 'none' : 'block';
-                    closeIcon.style.display = isExpanded ? 'block' : 'none';
-
-                    const handler = () => {
-                        isAnimating = false;
-                        button.disabled = false;
-                        infoPanel.removeEventListener('transitionend', handler);
-                    };
-                    infoPanel.addEventListener('transitionend', handler);
-                });
-            });
-
-            const profilePicContainer = document.getElementById('profilePicContainer');
-            const profileModal = document.getElementById('profileModal');
-            const goToProfileButton = document.getElementById('goToProfile');
-            const cancelProfileButton = document.getElementById('cancelProfile');
-
-            function showModal() {
-                profileModal.style.display = 'flex';
-                requestAnimationFrame(() => {
-                    profileModal.classList.add('show');
-                });
-            }
-
-            function hideModal() {
-                profileModal.classList.remove('show');
-                profileModal.classList.add('hide');
-                const handler = () => {
-                    profileModal.style.display = 'none';
-                    profileModal.classList.remove('hide');
-                    profileModal.removeEventListener('transitionend', handler);
-                };
-                profileModal.addEventListener('transitionend', handler);
-            }
-
-            profilePicContainer.addEventListener('click', showModal);
-
-            goToProfileButton.addEventListener('click', () => {
-                window.open('https://scriptblox.com/u/MEGGD', '_blank');
-                hideModal();
-            });
-
-            cancelProfileButton.addEventListener('click', hideModal);
-
-            profileModal.addEventListener('click', (event) => {
-                if (event.target === profileModal) {
-                    hideModal();
-                }
-            });
-        });
-    </script>
+game:GetService('RunService').RenderStepped:connect(function()
+if _G.Disabled then
+for i,v in next, game:GetService('Players'):GetPlayers() do
+if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+pcall(function()
+v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+v.Character.HumanoidRootPart.Transparency = 1
+v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+v.Character.HumanoidRootPart.Material = "Neon"
+v.Character.HumanoidRootPart.CanCollide = false
+end)
+end
+end
+end
+end)</code></pre>
+<div class="info-panel">
+<h3>Information (HitBox)</h3>
+<p>Just increases the player's HitBox, pretty simple script</p>
+</div>
+</div>
+</section>
+<section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
+<div class="badge new-update-badge">New Update</div>
+<div class="badge fixed-badge">Fixed</div>
+<div class="script-image-container">
+<img src="https://ucarecdn.com/a240211e-de60-4078-8284-715663da996d/1_20250803182522.png" alt="FPS Booster Script Image" loading="lazy" decoding="async" width="480" height="270">
+</div>
+<div class="script-title-container">
+<h2>Fps Booster</h2>
+</div>
+<button class="options-button" title="Info & Updates">
+<svg class="ellipsis-icon" viewBox="0 0 24 24">
+<path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+</svg>
+<svg class="close-icon" style="display:none" viewBox="0 0 24 24">
+<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+</svg>
+</button>
+<div class="code-container">
+<button class="copy-button" title="Copy Code">
+<svg viewBox="0 0 24 24">
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+</svg>
+</button>
+<pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/Best-Fps-Booster/refs/heads/main/Best%20Fps%20Booster", true))()</code></pre>
+<div class="info-panel">
+<h3>Update Log (Fps Booster)</h3>
+<ul>
+<li>Update V1<ul><li>Accelerated work script</li><li>Code optimized</li><li>Added new FPS boosting features</li></ul></li>
+<li>Update V2<ul><li>Reduced checks so that the script itself does not produce logs</li><li>Added game optimization features</li><li>The script has been partially optimized</li><li>Removed some functions that produce lags</li></ul></li>
+<li>Update V3<ul><li>Added "RenderFidelity" function to optimize complex effects suchs as "Tessellation"</li><li>Some functions have been fixed</li><li>Added a new way to gradually optimize the game when there are lags</li></ul></li>
+<li>Update V4<ul><li>Removed functions that could reduce FPS</li><li>Some parts of the code have been fixed</li></ul></li>
+<li>Update V5<ul><li>Added "Z._M14" function to clean garbage</li><li>Improved game optimization</li></ul></li>
+<li>Update V6<ul><li>Optimization</li></ul></li>
+<li>Update V7<ul><li>Improved Z._M1 function</li><li>Improved Z._M6 function</li><li>Added _M10 function for smoothness</li><li>Improved Z._M8 function to better support different effects</li></ul></li>
+<li>Update V8<ul><li>Removed Z._scriptManager function</li><li>Removed Z._M10 function</li><li>Improved Z._clientInterpolator function</li><li>Improved Z._M9 function</li><li>Improved Z._M8 function</li><li>Improved Z._M7 function</li><li>Improved Z._M6 function</li><li>Improved Z._M1 core function</li><li>Improved Z._M14 function</li><li>Improved Z._M13 function</li><li>Improved Z._M2 function</li><li>Improved Z._memoryManager function</li></ul></li>
+<li>Update V9<ul><li>Improved functions</li><li>Optimized Z._M5 function</li><li>Improved Z._M2 function</li><li>Improved Z._memoryManager function</li><li>Improved Z._clientInterpolator function</li><li>Improved Z._M4 function</li><li>Improved Z._M1 core function</li><li>Added Z._M11 function</li><li>Improved Z._M6 function</li><li>Improved Z._M8 function</li><li>Improved Z._M7 function</li><li>Improved Z._M9 function</li><li>Added Z. _M12 function</li></ul></li>
+<li>Update V10<ul><li>Improved Z._M9 function</li><li>Improved Z._M5 function</li><li>Improved Z._M12 function</li><li>Improved Z._M13 function</li><li>Changed Z._M12 function</li><li>Added Z._M12:f3 function</li><li>Added Z._M9:f2 function</li><li>Added Z._M5:f2 function</li><li>Added Z._M5:f1 function</li><li>Added Z._M4 function</li><li>Added Z._M6:f2 function</li><li>Added Z._M7:f2 function</li><li>Added Z._M9:f2 function</li><li>Added Z._M9:f1 function</li><li>Added Z._M4:f1 function</li><li>Added _M15 function</li><li>Added Z._M1:f1 function</li><li>Added Z._M13:f2 function</li><li>Improved Z._M13 function</li></ul></li>
+<li>Update V11<ul><li>Improved stability</li><li>The code has been slightly modified</li></ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section class="script-card" data-new-script="false" data-new-update="false" data-fixed="false">
+<div class="badge new-script-badge">New Script!</div>
+<div class="badge new-update-badge">New Update</div>
+<div class="badge fixed-badge">Fixed</div>
+<div class="script-image-container">
+<img src="https://ucarecdn.com/e61973cb-200f-4166-a3ce-020aeef2607d/3_20250803195707.png" alt="Unknown Battle Simulator Script Image" loading="lazy" decoding="async" width="480" height="270">
+</div>
+<div class="script-title-container">
+<h2>Unknown Battle Simulator</h2>
+</div>
+<button class="options-button" title="Info & Updates">
+<svg class="ellipsis-icon" viewBox="0 0 24 24">
+<path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+</svg>
+<svg class="close-icon" style="display:none" viewBox="0 0 24 24">
+<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+</svg>
+</button>
+<div class="code-container">
+<button class="copy-button" title="Copy Code">
+<svg viewBox="0 0 24 24">
+<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+</svg>
+</button>
+<pre class="code-block"><code class="language-lua">loadstring(game:HttpGet("https://raw.githubusercontent.com/SUUUUUS00000/All-special-characters-unlocked/refs/heads/main/All%20special%20characters%20unlocked", true))()</code></pre>
+<div class="info-panel">
+<h3>Information (Unknown Battle Simulator)</h3>
+<p>Unlocked all characters even gamepasses in the game "Unknown Battle Simulator"</p>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<p>&copy; 2025 MEGGD Scripts</p>
+</footer>
+<div id="profileModal" class="modal">
+<div class="modal-content">
+<p>Do you want to open my ScriptBlox profile?</p>
+<div class="modal-buttons">
+<button id="goToProfile">Go to</button>
+<button id="cancelProfile">Cancel</button>
+</div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lua.min.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{function initHighlighting(){typeof hljs!=='undefined'?hljs.highlightAll():setTimeout(initHighlighting,100)}initHighlighting();const copyButtons=document.querySelectorAll('.copy-button');copyButtons.forEach(button=>{const originalIconHTML=button.innerHTML;button.addEventListener('click',event=>{const currentButton=event.currentTarget;const codeBlock=currentButton.closest('.code-container').querySelector('.code-block code');const codeToCopy=codeBlock.textContent.trim();const tempTextArea=document.createElement('textarea');tempTextArea.value=codeToCopy;tempTextArea.style.position='absolute';tempTextArea.style.left='-9999px';document.body.appendChild(tempTextArea);tempTextArea.select();tempTextArea.setSelectionRange(0,99999);try{document.execCommand('copy');currentButton.innerHTML='<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>';currentButton.style.backgroundColor='#388a34';setTimeout(()=>{currentButton.innerHTML=originalIconHTML;currentButton.style.backgroundColor='#0e639c'},2000)}catch(err){}document.body.removeChild(tempTextArea)})});const optionsButtons=document.querySelectorAll('.options-button');optionsButtons.forEach(button=>{const scriptCard=button.closest('.script-card');const infoPanel=scriptCard.querySelector('.info-panel');const ellipsisIcon=button.querySelector('.ellipsis-icon');const closeIcon=button.querySelector('.close-icon');let isAnimating=false;button.addEventListener('click',()=>{if(isAnimating)return;isAnimating=true;button.disabled=true;const isExpanded=infoPanel.classList.toggle('expanded');ellipsisIcon.style.display=isExpanded?'none':'block';closeIcon.style.display=isExpanded?'block':'none';const handler=()=>{isAnimating=false;button.disabled=false;infoPanel.removeEventListener('transitionend',handler)};infoPanel.addEventListener('transitionend',handler)})});const profilePicContainer=document.getElementById('profilePicContainer');const profileModal=document.getElementById('profileModal');const goToProfileButton=document.getElementById('goToProfile');const cancelProfileButton=document.getElementById('cancelProfile');function showModal(){profileModal.style.display='flex';requestAnimationFrame(()=>{profileModal.classList.add('show')})}function hideModal(){profileModal.classList.remove('show');profileModal.classList.add('hide');const handler=()=>{profileModal.style.display='none';profileModal.classList.remove('hide');profileModal.removeEventListener('transitionend',handler)};profileModal.addEventListener('transitionend',handler)}profilePicContainer.addEventListener('click',showModal);goToProfileButton.addEventListener('click',()=>{window.open('https://scriptblox.com/u/MEGGD','_blank');hideModal()});cancelProfileButton.addEventListener('click',hideModal);profileModal.addEventListener('click',event=>{if(event.target===profileModal){hideModal()}})});
+</script>
 </body>
-</html>
+    </html>
