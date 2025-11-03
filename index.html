@@ -55,8 +55,6 @@ local workspace = workspace
 local candyCornObjects = {}
 local candyBowlObjects = {}
 local lastScanTime = 0
-local lastCornTeleportTime = 0
-local lastBowlTeleportTime = 0
 
 local function scanWorkspace()
     table.clear(candyCornObjects)
@@ -69,12 +67,21 @@ local function scanWorkspace()
         local object = children[i]
         
         if object:IsA("Model") then
-            local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
-            if primaryPart then
-                if object.Name == "Candy Corn" then
-                    candyCornObjects[#candyCornObjects + 1] = primaryPart
-                elseif object.Name == "Candy Bowl" then
-                    candyBowlObjects[#candyBowlObjects + 1] = primaryPart
+            if object.Name == "Candy Corn" then
+                local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
+                if primaryPart then
+                    local touchTransmitter = primaryPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchTransmitter then
+                        candyCornObjects[#candyCornObjects + 1] = {part = primaryPart, transmitter = touchTransmitter}
+                    end
+                end
+            elseif object.Name == "Candy Bowl" then
+                local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
+                if primaryPart then
+                    local touchTransmitter = primaryPart:FindFirstChildOfClass("TouchTransmitter")
+                    if touchTransmitter then
+                        candyBowlObjects[#candyBowlObjects + 1] = {part = primaryPart, transmitter = touchTransmitter}
+                    end
                 end
             end
         end
@@ -88,16 +95,19 @@ workspace.ChildAdded:Connect(function(object)
         task.wait(0.05)
         local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
         if primaryPart then
-            if object.Name == "Candy Corn" then
-                candyCornObjects[#candyCornObjects + 1] = primaryPart
-            elseif object.Name == "Candy Bowl" then
-                candyBowlObjects[#candyBowlObjects + 1] = primaryPart
+            local touchTransmitter = primaryPart:FindFirstChildOfClass("TouchTransmitter")
+            if touchTransmitter then
+                if object.Name == "Candy Corn" then
+                    candyCornObjects[#candyCornObjects + 1] = {part = primaryPart, transmitter = touchTransmitter}
+                elseif object.Name == "Candy Bowl" then
+                    candyBowlObjects[#candyBowlObjects + 1] = {part = primaryPart, transmitter = touchTransmitter}
+                end
             end
         end
     end
 end)
 
-local function teleportCandies()
+local function collectCandy(candyData)
     local character = player.Character
     if not character then
         return
@@ -108,6 +118,21 @@ local function teleportCandies()
         return
     end
     
+    if candyData and candyData.part and candyData.part.Parent and candyData.transmitter then
+        if firetouchinterest then
+            firetouchinterest(humanoidRootPart, candyData.transmitter.Parent, 0)
+            task.wait(0.01)
+            firetouchinterest(humanoidRootPart, candyData.transmitter.Parent, 1)
+        end
+    end
+end
+
+local cornIndex = 1
+local bowlIndex = 1
+local lastCornTime = 0
+local lastBowlTime = 0
+
+local function collectCandies()
     local currentTime = tick()
     
     if currentTime - lastScanTime >= 0.3 then
@@ -115,30 +140,35 @@ local function teleportCandies()
         scanWorkspace()
     end
     
-    local targetPosition = humanoidRootPart.Position
+    local cornDelay = 0.55
+    local bowlDelay = 0.55
     
-    if currentTime - lastCornTeleportTime >= 0.5 and #candyCornObjects > 0 then
-        local candy = candyCornObjects[1]
-        if candy and candy.Parent then
-            candy.Position = targetPosition
+    if currentTime - lastCornTime >= cornDelay and #candyCornObjects > 0 then
+        if cornIndex > #candyCornObjects then
+            cornIndex = 1
         end
-        table.remove(candyCornObjects, 1)
-        lastCornTeleportTime = currentTime
+        
+        local candy = candyCornObjects[cornIndex]
+        collectCandy(candy)
+        table.remove(candyCornObjects, cornIndex)
+        lastCornTime = currentTime
     end
     
-    if currentTime - lastBowlTeleportTime >= 1 and #candyBowlObjects > 0 then
-        local candy = candyBowlObjects[1]
-        if candy and candy.Parent then
-            candy.Position = targetPosition
+    if currentTime - lastBowlTime >= bowlDelay and #candyBowlObjects > 0 then
+        if bowlIndex > #candyBowlObjects then
+            bowlIndex = 1
         end
-        table.remove(candyBowlObjects, 1)
-        lastBowlTeleportTime = currentTime
+        
+        local candy = candyBowlObjects[bowlIndex]
+        collectCandy(candy)
+        table.remove(candyBowlObjects, bowlIndex)
+        lastBowlTime = currentTime
     end
 end
 
 while true do
-    teleportCandies()
-    task.wait(0.05)
+    collectCandies()
+    task.wait(0.55)
 end</code></pre>
 <div class="info-panel">
 <h3>Information (Ability Wars)</h3>
