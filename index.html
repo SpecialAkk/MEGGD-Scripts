@@ -48,30 +48,34 @@
 </svg>
 </button>
 <pre class="code-block"><code class="language-lua">local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
-local teleportDelay = 0.1
+local workspace = workspace
 
-local candyObjects = {}
+local candyCornObjects = {}
+local candyBowlObjects = {}
 local lastScanTime = 0
-
-local function isCandyObject(object)
-    return object.Name == "Candy Corn" or object.Name == "Candy Bowl"
-end
+local lastCornTeleportTime = 0
+local lastBowlTeleportTime = 0
 
 local function scanWorkspace()
-    candyObjects = {}
+    table.clear(candyCornObjects)
+    table.clear(candyBowlObjects)
     
     local children = workspace:GetChildren()
+    local childCount = #children
     
-    for i = 1, #children do
+    for i = 1, childCount do
         local object = children[i]
         
-        if object:IsA("Model") and isCandyObject(object) then
+        if object:IsA("Model") then
             local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
             if primaryPart then
-                table.insert(candyObjects, primaryPart)
+                if object.Name == "Candy Corn" then
+                    candyCornObjects[#candyCornObjects + 1] = primaryPart
+                elseif object.Name == "Candy Bowl" then
+                    candyBowlObjects[#candyBowlObjects + 1] = primaryPart
+                end
             end
         end
     end
@@ -80,16 +84,20 @@ end
 scanWorkspace()
 
 workspace.ChildAdded:Connect(function(object)
-    if object:IsA("Model") and isCandyObject(object) then
+    if object:IsA("Model") then
         task.wait(0.05)
         local primaryPart = object.PrimaryPart or object:FindFirstChildWhichIsA("BasePart")
         if primaryPart then
-            table.insert(candyObjects, primaryPart)
+            if object.Name == "Candy Corn" then
+                candyCornObjects[#candyCornObjects + 1] = primaryPart
+            elseif object.Name == "Candy Bowl" then
+                candyBowlObjects[#candyBowlObjects + 1] = primaryPart
+            end
         end
     end
 end)
 
-local function teleportAllCandyObjects()
+local function teleportCandies()
     local character = player.Character
     if not character then
         return
@@ -100,7 +108,6 @@ local function teleportAllCandyObjects()
         return
     end
     
-    local targetPosition = humanoidRootPart.Position
     local currentTime = tick()
     
     if currentTime - lastScanTime >= 0.3 then
@@ -108,17 +115,30 @@ local function teleportAllCandyObjects()
         scanWorkspace()
     end
     
-    for i = 1, #candyObjects do
-        local object = candyObjects[i]
-        if object and object.Parent then
-            object.Position = targetPosition
+    local targetPosition = humanoidRootPart.Position
+    
+    if currentTime - lastCornTeleportTime >= 0.5 and #candyCornObjects > 0 then
+        local candy = candyCornObjects[1]
+        if candy and candy.Parent then
+            candy.Position = targetPosition
         end
+        table.remove(candyCornObjects, 1)
+        lastCornTeleportTime = currentTime
+    end
+    
+    if currentTime - lastBowlTeleportTime >= 1 and #candyBowlObjects > 0 then
+        local candy = candyBowlObjects[1]
+        if candy and candy.Parent then
+            candy.Position = targetPosition
+        end
+        table.remove(candyBowlObjects, 1)
+        lastBowlTeleportTime = currentTime
     end
 end
 
 while true do
-    teleportAllCandyObjects()
-    task.wait(teleportDelay)
+    teleportCandies()
+    task.wait(0.05)
 end</code></pre>
 <div class="info-panel">
 <h3>Information (Ability Wars)</h3>
